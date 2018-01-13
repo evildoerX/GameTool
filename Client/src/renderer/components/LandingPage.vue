@@ -1,211 +1,128 @@
 <template>
-  <div>
-    <Button type='primary' @click='getdata'>ok</Button>
-    <Button type="primary" @click="exportData">导出</Button>
-    <Table :columns='columns1' :data='docdata' ref="table"></Table>
-    <div class=''>
-      <!-- {{docdata}} -->
-    </div>
+  <div id="wrapper">
+    <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
+    <main>
+      <div class="left-side">
+        <span class="title">
+          Welcome to your new project!
+        </span>
+        <system-information></system-information>
+      </div>
+
+      <div class="right-side">
+        <div class="doc">
+          <div class="title">Getting Started</div>
+          <p>
+            electron-vue comes packed with detailed documentation that covers everything from
+            internal configurations, using the project structure, building your application,
+            and so much more.
+          </p>
+          <button @click="open('https://simulatedgreg.gitbooks.io/electron-vue/content/')">Read the Docs</button><br><br>
+        </div>
+        <div class="doc">
+          <div class="title alt">Other Documentation</div>
+          <button class="alt" @click="open('https://electron.atom.io/docs/')">Electron</button>
+          <button class="alt" @click="open('https://vuejs.org/v2/guide/')">Vue.js</button>
+        </div>
+      </div>
+    </main>
   </div>
 </template>
 
 <script>
-  var path = require('path')
-  var fs = require('fs')
-  var _path = path.join(__dirname, '..', 'game/dota/data/clientData/Battle.json')
+  import SystemInformation from './LandingPage/SystemInformation'
 
   export default {
     name: 'landing-page',
-    components: {
-    },
-    data () {
-      return {
-        columns1: [
-          {
-            title: 'ID',
-            width: 200,
-            fixed: 'left',
-            key: 'ID'
-          },
-          {
-            title: 'LevelID',
-            width: 200,
-            key: 'LevelID'
-          },
-          {
-            title: 'BackgroundPic',
-            width: 200,
-            key: 'BackgroundPic'
-          },
-          {
-            title: 'BossDPS%',
-            width: 200,
-            key: 'BossDPS%'
-          },
-          {
-            title: 'Level5',
-            width: 200,
-            key: 'Level5'
-          },
-          {
-            title: 'MoneyReward1',
-            width: 200,
-            key: 'MoneyReward1'
-          },
-          {
-            title: 'MoneyReward2',
-            width: 200,
-            key: 'MoneyReward2'
-          },
-          {
-            title: 'MoneyReward3',
-            width: 200,
-            key: 'MoneyReward3'
-          },
-          {
-            title: 'MoneyReward4',
-            width: 200,
-            key: 'MoneyReward4'
-          },
-          {
-            title: 'MoneyReward5',
-            width: 200,
-            key: 'MoneyReward5'
-          },
-          {
-            title: 'Monster1ID',
-            width: 200,
-            key: 'Monster1ID'
-          },
-          {
-            title: 'Monster2ID',
-            width: 200,
-            key: 'Monster2ID'
-          },
-          {
-            title: 'Monster3ID',
-            width: 200,
-            key: 'Monster3ID'
-          },
-          {
-            title: 'Monster4ID',
-            width: 200,
-            key: 'Monster4ID'
-          },
-          {
-            title: 'Monster5ID',
-            width: 200,
-            key: 'Monster5ID'
-          },
-          {
-            title: 'MonsterDPS%',
-            width: 200,
-            key: 'MonsterDPS%'
-          },
-          {
-            title: 'MonsterHP%',
-            width: 200,
-            key: 'MonsterHP%'
-          },
-          {
-            title: 'MP1',
-            width: 200,
-            key: 'MP1'
-          },
-          {
-            title: 'MP2',
-            width: 200,
-            key: 'MP2'
-          },
-          {
-            title: 'MP3',
-            width: 200,
-            key: 'MP3'
-          },
-          {
-            title: 'MP4',
-            width: 200,
-            key: 'MP4'
-          },
-          {
-            title: 'MP5',
-            width: 200,
-            key: 'MP5'
-          },
-          {
-            title: 'RaidWaveWeight',
-            width: 200,
-            key: 'RaidWaveWeight'
-          },
-          {
-            title: 'StageDifficulty:',
-            width: 200,
-            key: 'StageDifficulty:'
-          },
-          {
-            title: 'StageID',
-            width: 200,
-            key: 'StageID'
-          },
-          {
-            title: 'StageName',
-            width: 200,
-            key: 'StageName'
-          },
-          {
-            title: 'Stars1',
-            width: 200,
-            key: 'Stars1'
-          },
-          {
-            title: 'Stars2',
-            width: 200,
-            key: 'Stars2'
-          },
-          {
-            title: 'Stars3',
-            width: 200,
-            key: 'Stars3'
-          },
-          {
-            title: 'Stars4',
-            width: 200,
-            key: 'Stars4'
-          },
-          {
-            title: 'Stars5',
-            width: 200,
-            key: 'Stars5'
-          },
-          {
-            title: 'WaveID',
-            width: 200,
-            key: 'WaveID'
-          }
-        ],
-        docdata: []
-      }
-    },
+    components: { SystemInformation },
     methods: {
-      getdata () {
-        fs.readFile(_path, 'utf8', (err, data) => {
-          if (err) {
-            console.error(err)
-          } else {
-            console.log(data)
-            this.docdata = JSON.parse(data)
-          }
-        })
-      },
-      exportData (type) {
-        this.$refs.table.exportCsv({
-          filename: 'The original data'
-        })
+      open (link) {
+        this.$electron.shell.openExternal(link)
       }
     }
   }
 </script>
 
 <style>
+  @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body { font-family: 'Source Sans Pro', sans-serif; }
+
+  #wrapper {
+    background:
+      radial-gradient(
+        ellipse at top left,
+        rgba(255, 255, 255, 1) 40%,
+        rgba(229, 229, 229, .9) 100%
+      );
+    height: 100vh;
+    padding: 60px 80px;
+    width: 100vw;
+  }
+
+  #logo {
+    height: auto;
+    margin-bottom: 20px;
+    width: 420px;
+  }
+
+  main {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  main > div { flex-basis: 50%; }
+
+  .left-side {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .welcome {
+    color: #555;
+    font-size: 23px;
+    margin-bottom: 10px;
+  }
+
+  .title {
+    color: #2c3e50;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .title.alt {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .doc p {
+    color: black;
+    margin-bottom: 10px;
+  }
+
+  .doc button {
+    font-size: .8em;
+    cursor: pointer;
+    outline: none;
+    padding: 0.75em 2em;
+    border-radius: 2em;
+    display: inline-block;
+    color: #fff;
+    background-color: #4fc08d;
+    transition: all 0.15s ease;
+    box-sizing: border-box;
+    border: 1px solid #4fc08d;
+  }
+
+  .doc button.alt {
+    color: #42b983;
+    background-color: transparent;
+  }
 </style>
